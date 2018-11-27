@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Course {
 	@Id
 	@SequenceGenerator(name = "course_seq", sequenceName = "course_seq", schema = "public", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "couse_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "course_seq")
     @Column(nullable = false)
 	private Long code;
 

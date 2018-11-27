@@ -10,4 +10,5 @@ import br.com.sisdepe.api.model.UserType;
 public interface UserRepository extends JpaRepository<User, Long>{
 
 	List<User> findByType(UserType type);
+	
 }

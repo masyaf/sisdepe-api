@@ -52,6 +52,9 @@ public class Project {
 	@OneToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Justification> justifications;
+	
+    @OneToOne
+	private User teacher; 
 
 	@OneToOne
 	private Grade grade;

@@ -27,7 +27,7 @@ public class Project {
 
 	@Id
 	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "project_seq", sequenceName = "project_seq")
-	@GeneratedValue(generator = "project_seq", strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(generator = "project_seq", strategy = GenerationType.TABLE)
 	@Column(nullable = false)
 	private Long code;
 

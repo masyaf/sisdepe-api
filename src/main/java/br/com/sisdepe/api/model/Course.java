@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -21,23 +24,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "course")
 public class Course {
-
 	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "course_seq", sequenceName = "course_seq")
-	@GeneratedValue(generator = "course_seq", strategy = GenerationType.SEQUENCE)
-	@Column(nullable = false)
+	@SequenceGenerator(name = "tb_pessoa_id_seq", sequenceName = "tb_pessoa_id_seq", schema = "public", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "tb_pessoa_id_seq")
+    @Column(nullable = false)
 	private Long code;
-	
+
 	@NotEmpty
 	private String name;
-	
+
 	private String description;
-	
-	@OneToMany(fetch = FetchType.EAGER,
-			   cascade = CascadeType.ALL)
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Grade> grades;
-	
-	@OneToMany
+
+	@ManyToMany
+	@JoinTable(name = "course_user", joinColumns = @JoinColumn(name = "code_course")
+				, inverseJoinColumns = @JoinColumn(name = "code_user"))
 	private Set<User> users;
 
 	public Long getCode() {
@@ -72,8 +75,6 @@ public class Course {
 		this.grades = grades;
 	}
 
-    
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -82,7 +83,7 @@ public class Course {
 		return result;
 	}
 
-	@JsonIgnoreProperties({ "password", "isActive", "login" })	
+	@JsonIgnoreProperties({ "password", "isActive", "login" })
 	public Set<User> getUsers() {
 		return users;
 	}

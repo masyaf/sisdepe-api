@@ -28,6 +28,7 @@ public class User {
 	@NotBlank
 	private String password;
 	@Email
+	@Column(unique = true)
 	private String email;
 	@NotNull
 	private Boolean active;

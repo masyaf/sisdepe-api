@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.sisdepe.api.event.ResourceCreatedEvent;
 import br.com.sisdepe.api.model.Justification;
 import br.com.sisdepe.api.model.Project;
+import br.com.sisdepe.api.model.UserType;
 import br.com.sisdepe.api.service.ProjectService;
 
 @RestController
@@ -62,7 +63,7 @@ public class ProjectResource {
 	
 	@GetMapping("/{code}/coordinators")
 	public ResponseEntity<?> findCourseByUserCode(@PathVariable Long code) {
-		List<Project> projects = projectService.findByCourseUsersCode(code);
+		List<Project> projects = projectService.findByCourseUsersCodeAndCourseUsersType(code, UserType.COORDINATOR);
 		return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
 	}
 	

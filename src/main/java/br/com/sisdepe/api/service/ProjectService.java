@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.sisdepe.api.model.Justification;
 import br.com.sisdepe.api.model.Project;
+import br.com.sisdepe.api.model.UserType;
 import br.com.sisdepe.api.repository.ProjectRepository;
 
 @Service
@@ -33,8 +34,9 @@ public class ProjectService {
 		
 	}
 
-	public List<Project> findByCourseUsersCode(Long code) {
-		return projectRepository.findByCourseUsersCode(code);
+	public List<Project> findByCourseUsersCodeAndCourseUsersType(Long code, UserType type) {
+		
+		return projectRepository.findByCourseUsersCodeAndCourseUsersType(code, type);
 	}
 	public List<Project> findByRequestingCode(Long code){
 		return projectRepository.findByRequestingCode(code);

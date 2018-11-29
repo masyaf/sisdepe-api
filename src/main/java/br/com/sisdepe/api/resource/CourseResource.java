@@ -22,6 +22,7 @@ import br.com.sisdepe.api.model.Course;
 import br.com.sisdepe.api.model.Grade;
 import br.com.sisdepe.api.repository.CourseRepository;
 import br.com.sisdepe.api.service.CourseService;
+import br.com.sisdepe.api.service.GradeService;
 
 @RestController
 @RequestMapping("/courses")
@@ -29,6 +30,9 @@ public class CourseResource {
 
 	@Autowired
 	private CourseService courseService;
+	
+	@Autowired
+	private GradeService gradeService;
 
 	@Autowired
 	private CourseRepository courseRepository;
@@ -69,6 +73,15 @@ public class CourseResource {
 		courseService.addGradeToCourse(courseSaved, grades);
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, code));
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseSaved);
+	}
+	@PutMapping("/grades/{code}")
+	public ResponseEntity<Grade> updateGrades(@PathVariable Long code , @Valid @RequestBody Grade grade,
+			HttpServletResponse response) {
+		
+		Grade gradeSaved = gradeService.update(code, grade);
+		
+		publisher.publishEvent(new ResourceCreatedEvent(this, response, grade.getCode()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(gradeSaved);
 	}
 
 }

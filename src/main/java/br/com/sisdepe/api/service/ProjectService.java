@@ -32,6 +32,12 @@ public class ProjectService {
 		return projectRepository.save(project);
 		
 	}
-	
-	
+
+	public List<Project> findByCourseUsersCode(Long code) {
+		return projectRepository.findByCourseUsersCode(code);
+	}
+	public List<Project> findByRequestingCode(Long code){
+		return projectRepository.findByRequestingCode(code);
+	}
+
 }

@@ -28,17 +28,22 @@ public class CourseResource {
 
 	@Autowired
 	private CourseService courseService;
-	
+
 	@Autowired
 	private CourseRepository courseRepository;
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-	
 	@GetMapping
 	public ResponseEntity<?> all() {
 		List<Course> courses = courseRepository.findAll();
+		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/{code}/users")
+	public ResponseEntity<?> findCourseByUserCode(@PathVariable Long code) {
+		List<Course> courses = courseRepository.findByUsersCode(code);
 		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
 	}
 

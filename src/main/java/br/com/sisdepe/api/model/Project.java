@@ -54,7 +54,7 @@ public class Project {
 	private Set<Justification> justifications;
 	
     @OneToOne
-	private User teacher; 
+	private User requesting;
 
 	@OneToOne
 	private Grade grade;
@@ -132,10 +132,22 @@ public class Project {
 
 		this.grade = grade;
 	}
+	
+
+
 
 	@JsonIgnoreProperties({ "grades" })
 	public Course getCourse() {
 		return course;
+	}
+
+	@JsonIgnoreProperties({ "password", "active", "login" })
+	public User getRequesting() {
+		return requesting;
+	}
+
+	public void setRequesting(User requesting) {
+		this.requesting = requesting;
 	}
 
 	public void setCourse(Course course) {

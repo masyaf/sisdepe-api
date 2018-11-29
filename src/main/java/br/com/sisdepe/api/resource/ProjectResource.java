@@ -59,5 +59,18 @@ public class ProjectResource {
 		Project projectSaved = projectService.findByCode(code);
 		projectService.addJustification(projectSaved, justifications);
 	}
+	
+	@GetMapping("/{code}/coordinators")
+	public ResponseEntity<?> findCourseByUserCode(@PathVariable Long code) {
+		List<Project> projects = projectService.findByCourseUsersCode(code);
+		return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
+	}
+	
+	
+	@GetMapping("/{code}/teachers")
+	public ResponseEntity<?> findByRequestingUserCode(@PathVariable Long code) {
+		List<Project> projects = projectService.findByRequestingCode(code);
+		return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
+	}
 
 }

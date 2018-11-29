@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +62,7 @@ public class CourseResource {
 		return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
 	}
 
-	@PostMapping("/{code}/grades")
+	@PutMapping("/{code}/grades")
 	public ResponseEntity<Course> addGrades(@PathVariable Long code, @Valid @RequestBody List<Grade> grades,
 			HttpServletResponse response) {
 		Course courseSaved = courseService.findByCode(code);

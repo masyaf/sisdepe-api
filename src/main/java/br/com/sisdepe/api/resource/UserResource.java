@@ -32,14 +32,14 @@ public class UserResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public ResponseEntity<?> all() {
+	public ResponseEntity<?> all() {// /users no get retorna todos os users cadastrados
 		List<User> users = userService.findAll();
 		return !users.isEmpty() ? ResponseEntity.ok(users) : ResponseEntity.noContent().build();
 	}
 
-	@PostMapping
+	@PostMapping// post para a rota /users/
 	public ResponseEntity<User> create(@Valid @RequestBody User user, HttpServletResponse response) {
-		// save user
+		// salva  o usuario
 		User userSaved = userService.save(user);
 
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, userSaved.getCode()));
@@ -47,20 +47,20 @@ public class UserResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
 	}
 
-	@GetMapping("/{code}")
-	public ResponseEntity<User> findByCode(@PathVariable Long code) {
-		User user = userService.findOne(code);
+	@GetMapping("/{code}")// /users/id
+	public ResponseEntity<User> findByCode(@PathVariable Long code) {//parametro id do usuario
+		User user = userService.findOne(code);//seleciona um unico um usuario
 		return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
 
 	}
-	@GetMapping("/teachers")
+	@GetMapping("/teachers")// /users/teachers/ lista todos os professores cadastrados
 	public ResponseEntity<?> findAllTeachers() {
-		List<User> teachers = userService.findAllTeachers();
+		List<User> teachers = userService.findAllTeachers();//carrega todas os professores
 		return !teachers.isEmpty() ? ResponseEntity.ok(teachers) : ResponseEntity.noContent().build();
 	}
-	@GetMapping("/coordinators")
+	@GetMapping("/coordinators")// /users/coordinators/ lista todos os coordenadores cadastrados
 	public ResponseEntity<?> findAllCoordinators() {
-		List<User> coordinators = userService.findAllCoordinators();
+		List<User> coordinators = userService.findAllCoordinators();//carrega todos os coordenadores
 		return !coordinators.isEmpty() ? ResponseEntity.ok(coordinators) : ResponseEntity.noContent().build();
 	}
 }

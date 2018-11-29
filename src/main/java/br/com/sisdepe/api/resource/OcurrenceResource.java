@@ -20,34 +20,34 @@ import br.com.sisdepe.api.event.ResourceCreatedEvent;
 import br.com.sisdepe.api.model.Ocurrence;
 import br.com.sisdepe.api.repository.OcurrenceRepository;
 
-@RestController
-@RequestMapping("/ocurrences")
+@RestController //define como um controller de padrão rest
+@RequestMapping("/ocurrences")// mapeia a partir de /ocurrences/
 public class OcurrenceResource {
 
-	@Autowired
+	@Autowired//injeção de dependencia para o repositorio de ocorrencia
 	private OcurrenceRepository ocurrenceRepository;
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
 	public ResponseEntity<?> findAll() {
-		List<Ocurrence> ocurrence = ocurrenceRepository.findAll();
-		return !ocurrence.isEmpty() ? ResponseEntity.ok(ocurrence) : ResponseEntity.noContent().build();
+		List<Ocurrence> ocurrence = ocurrenceRepository.findAll();//encontra todas as ocorrencias cadastradas
+		return !ocurrence.isEmpty() ? ResponseEntity.ok(ocurrence) : ResponseEntity.noContent().build();//retorna como corpo de requisição
 	}
 
-	@PostMapping
+	@PostMapping// post para /ocurrences
 	public ResponseEntity<Ocurrence> create(@Valid @RequestBody Ocurrence ocurrence,
 			HttpServletResponse response) {
-		Ocurrence ocurenceSaved = ocurrenceRepository.save(ocurrence);
+		Ocurrence ocurenceSaved = ocurrenceRepository.save(ocurrence);//salva o objeto ocurrence 
 
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, ocurenceSaved.getCode()));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(ocurenceSaved);
+		return ResponseEntity.status(HttpStatus.CREATED).body(ocurenceSaved);//retorna o status ok pelo corpo da requisição
 
 	}
-	@GetMapping("/{code}")
-	public ResponseEntity<Ocurrence> findByCode(@PathVariable Long code) {
-		Ocurrence ocurrence = ocurrenceRepository.findOne(code);
-		 return ocurrence != null ? ResponseEntity.ok(ocurrence) : ResponseEntity.notFound().build();
+	@GetMapping("/{code}")//get para /ocurrences/id
+	public ResponseEntity<Ocurrence> findByCode(@PathVariable Long code) {// parametro id da ocorrencia
+		Ocurrence ocurrence = ocurrenceRepository.findOne(code);//encontra a ocorrencia pelo id da mesma
+		 return ocurrence != null ? ResponseEntity.ok(ocurrence) : ResponseEntity.notFound().build();// retorna como corpo de req.
 	}
 }

@@ -28,23 +28,23 @@ import br.com.sisdepe.api.service.ProjectService;
 public class ProjectResource {
 
 	@Autowired
-	private ProjectService projectService;
+	private ProjectService projectService;//injeção do projeto service
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-	@PostMapping
+	@PostMapping// post para /projects
 	public ResponseEntity<Project> create(@Valid @RequestBody Project project, HttpServletResponse response) {
-		Project projectSaved = projectService.save(project);
+		Project projectSaved = projectService.save(project);//salva o objeto Project no banco
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, projectSaved.getCode()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(projectSaved);
 	}
 
-	@GetMapping
+	@GetMapping//url get para visualizar todos os projetos cadastrados
 	public ResponseEntity<?> findAll() {
 		List<Project> projects = null;
 		try {
-			projects = projectService.findAll();	
+			projects = projectService.findAll();//retorna todos os projetos cadastrados	
 		}catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -52,7 +52,7 @@ public class ProjectResource {
 		return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/{code}/justifications")
+	@PutMapping("/{code}/justifications")// /projects/id/justifications
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void addJustification(@PathVariable Long code, @RequestBody List<Justification> justifications,
 			HttpServletResponse response) {

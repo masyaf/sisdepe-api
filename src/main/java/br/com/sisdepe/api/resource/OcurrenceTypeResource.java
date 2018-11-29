@@ -21,33 +21,33 @@ import br.com.sisdepe.api.model.OcurrenceType;
 import br.com.sisdepe.api.repository.OcurrenceTypeRepository;
 
 @RestController
-@RequestMapping("/ocurrencetypes")
+@RequestMapping("/ocurrencetypes")//mapeia a partir de /ocurrencetypes
 public class OcurrenceTypeResource {
 
 	@Autowired
-	private OcurrenceTypeRepository ocurrenceTypeRepository;
+	private OcurrenceTypeRepository ocurrenceTypeRepository;//injeção de depedencias
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public ResponseEntity<?> findAll() {
-		List<OcurrenceType> ocurrenceTypes = ocurrenceTypeRepository.findAll();
+	public ResponseEntity<?> findAll() {//retorna todos os tipos de ocorrencias cadastrados
+		List<OcurrenceType> ocurrenceTypes = ocurrenceTypeRepository.findAll();//lista todas as ocorrencias do banco
 		return !ocurrenceTypes.isEmpty() ? ResponseEntity.ok(ocurrenceTypes) : ResponseEntity.noContent().build();
 	}
-	@PostMapping
+	@PostMapping//post para a /ocurrencetypes
 	public ResponseEntity<OcurrenceType> create(@Valid @RequestBody OcurrenceType ocurrenceType,
 			HttpServletResponse response) {
-		OcurrenceType ocurrenceTypeSaved = ocurrenceTypeRepository.save(ocurrenceType);
+		OcurrenceType ocurrenceTypeSaved = ocurrenceTypeRepository.save(ocurrenceType);//cadastra no banco um objeto ocurrenceType
  
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, ocurrenceTypeSaved.getCode()));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(ocurrenceTypeSaved);
 
 	}
-	@GetMapping("/{code}")
-	public ResponseEntity<OcurrenceType> findByCode(@PathVariable Long code) {
-		OcurrenceType ocurrenceType = ocurrenceTypeRepository.findOne(code);
+	@GetMapping("/{code}")// retorna uma ocorrencia pelo id via get
+	public ResponseEntity<OcurrenceType> findByCode(@PathVariable Long code) {//parametro id
+		OcurrenceType ocurrenceType = ocurrenceTypeRepository.findOne(code);//encontra um unico tipo de ocorrencia pelo id.
 		 return ocurrenceType != null ? ResponseEntity.ok(ocurrenceType) : ResponseEntity.notFound().build();
 	}
 }

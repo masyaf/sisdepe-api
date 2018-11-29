@@ -10,19 +10,19 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "justification")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "justification")//anotação que nomeia a tabela no banco de dados como 'justification'
 public class Justification {
-	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "justification_seq", sequenceName = "justification_seq")
-	@GeneratedValue(generator = "justification_seq", strategy = GenerationType.SEQUENCE)
-	@Column(nullable = false)
+	@Id//define o atributo como chave primária
+	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "justification_seq", sequenceName = "justification_seq")//gerador de sequencia para a tabela
+	@GeneratedValue(generator = "justification_seq", strategy = GenerationType.SEQUENCE)// gera automaticamente os id's incrementais da tabela 
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
 	private Long code;
 	private String description;
 
 	@Column(name = "created_at")
-	private LocalDate createdAt = LocalDate.now();
-
+	private LocalDate createdAt = LocalDate.now();//pega o padrão de datas e a hora atual para a geracão ao salvar no banco
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}
@@ -46,7 +46,7 @@ public class Justification {
 	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
-
+	//equals e hashcode
 	@Override
 	public int hashCode() {
 		final int prime = 31;

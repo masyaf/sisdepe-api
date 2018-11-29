@@ -22,50 +22,50 @@ import br.com.sisdepe.api.model.Grade;
 import br.com.sisdepe.api.repository.CourseRepository;
 import br.com.sisdepe.api.service.CourseService;
 
-@RestController
-@RequestMapping("/courses")
+@RestController//define como um controller de padrão rest
+@RequestMapping("/courses")// mapeia a partir da rota /courses/...
 public class CourseResource {
 
-	@Autowired
+	@Autowired//injeção de dependencia do serviço de cursos
 	private CourseService courseService;
 
-	@Autowired
+	@Autowired//injeção de dependencia do repositório de cursos
 	private CourseRepository courseRepository;
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-	@GetMapping
+	@GetMapping//rota /courses/
 	public ResponseEntity<?> all() {
-		List<Course> courses = courseRepository.findAll();
-		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
+		List<Course> courses = courseRepository.findAll();//recebe todos os cursos cadastrados
+		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();//verifica se o array não está nulo e retorna como uma resposta
 	}
 
-	@GetMapping("/{code}/users")
-	public ResponseEntity<?> findCourseByUserCode(@PathVariable Long code) {
-		List<Course> courses = courseRepository.findByUsersCode(code);
-		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
+	@GetMapping("/{code}/users")//rota /courses/users
+	public ResponseEntity<?> findCourseByUserCode(@PathVariable Long code) {//parameto do codigo de usuario
+		List<Course> courses = courseRepository.findByUsersCode(code); //recebe todos os cursos cadastrados pelos codigos de usuarios
+		return !courses.isEmpty() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build(); //verifica se o array não está nulo e retorna como uma resposta
 	}
 
-	@PostMapping
+	@PostMapping//post para /courses
 	public ResponseEntity<Course> create(@Valid @RequestBody Course course, HttpServletResponse response) {
-		Course courseSaved = courseService.save(course);
+		Course courseSaved = courseService.save(course); //recebe todos os cursos cadastrados pelos codigos de usuarios
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, course.getCode()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(courseSaved);
+		return ResponseEntity.status(HttpStatus.CREATED).body(courseSaved);//retorna um curso criado como corpo da requisição
 
 	}
 
-	@GetMapping("/{code}")
-	public ResponseEntity<Course> findByCode(@PathVariable Long code) {
-		Course course = courseService.findByCode(code);
-		return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
+	@GetMapping("/{code}")//   /courses/id
+	public ResponseEntity<Course> findByCode(@PathVariable Long code) {//id do curso como parametro
+		Course course = courseService.findByCode(code);// encontra um unico curso pelo id do memso
+		return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();// retorna o corpo da requisicao com os cursos
 	}
 
-	@PostMapping("/{code}/grades")
+	@PostMapping("/{code}/grades")//  courses/id/grades  via post
 	public ResponseEntity<Course> addGrades(@PathVariable Long code, @Valid @RequestBody List<Grade> grades,
 			HttpServletResponse response) {
-		Course courseSaved = courseService.findByCode(code);
-		courseService.addGradeToCourse(courseSaved, grades);
+		Course courseSaved = courseService.findByCode(code);// retorna todas as turmas de um curso
+		courseService.addGradeToCourse(courseSaved, grades);//adiciona turma a um curso
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, code));
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseSaved);
 	}

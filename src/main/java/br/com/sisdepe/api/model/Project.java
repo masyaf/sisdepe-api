@@ -21,51 +21,53 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@Table(name = "project")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "project")//anotação que nomeia a tabela no banco de dados como 'project'
 public class Project {
 
-	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "project_seq", sequenceName = "project_seq")
-	@GeneratedValue(generator = "project_seq", strategy = GenerationType.TABLE)
-	@Column(nullable = false)
+	@Id//define o atributo como chave primária
+	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "project_seq", sequenceName = "project_seq")//gerador de sequencia para a tabela
+	@GeneratedValue(generator = "project_seq", strategy = GenerationType.TABLE)// gera automaticamente os id's incrementais da tabela 
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
 	private Long code;
 
-	@NotEmpty
+	@NotEmpty // anotação que impede que seja feito um `bind` de valores vazios neste campo
 	private String name;
 
-	@NotEmpty
+	@NotEmpty  // anotação que impede que seja feito um `bind` de valores vazios neste campo
 	private String summary;
 
-	@Column(name = "created_at")
+	@Column(name = "created_at")//atributo que pega a data atual com padrão local
 	private LocalDate createdAt = LocalDate.now();
 
-	@Column(name = "requested_date")
+	@Column(name = "requested_date")// data de requisição
 	private LocalDate requestedDate;
 
 	private Status status;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(cascade = CascadeType.ALL)// relação de um para muitos de criterios para projeto, um projeto tem muitos criterios
+	@LazyCollection(LazyCollectionOption.FALSE)//evita o erro de lazyException, ao carregar os projetos ele nao carrega todas os criterios e vice-versa
 	private List<Criterion> criterions;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(cascade = CascadeType.ALL)// relação de um para muitos de criterios para projeto, um projeto tem muitos criterios
+	@LazyCollection(LazyCollectionOption.FALSE)//evita o erro de lazyException, ao carregar os projetos ele nao carrega todas as justificativas e vice-versa
 	private Set<Justification> justifications;
 	
-    @OneToOne
+    @OneToOne// relação de um para um de um usuario requisitando um projeto
 	private User requesting;
 
-	@OneToOne
+	@OneToOne // relação de um para um de uma turma para um projeto
 	private Grade grade;
 
-	@OneToOne
+	@OneToOne // relação de um para um de um curso requisitando um projeto
 	private Course course;
-
+	
+	
+	
 	public Project() {
 
 	}
-
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}

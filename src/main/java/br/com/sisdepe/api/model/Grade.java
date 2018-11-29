@@ -11,22 +11,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "grade")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "grade")//anotação que nomeia a tabela no banco de dados como 'grade'
 public class Grade {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gradeSequence")
-	@SequenceGenerator(name = "gradeSequence", sequenceName = "grade_seq", initialValue = 1, allocationSize = 1)
-	@Column(nullable = false)
-	private Long code;
-	private String name;
-	private String period;
-	@Enumerated(EnumType.STRING)
+	@Id//define o atributo como chave primária
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gradeSequence")//gerador de sequencia para a tabela
+	@SequenceGenerator(name = "gradeSequence", sequenceName = "grade_seq", initialValue = 1, allocationSize = 1)// gera automaticamente os id's incrementais da tabela 
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
+	private Long code;//codigo
+	private String name;//nome
+	private String period;//periodo
+	@Enumerated(EnumType.STRING)//usa um ENUM de strings para determinar o turno
 	private Shift shift;
 	@ManyToOne
-	private Course course;
-
+	private Course course; // relação de muitos para um de turmas e cursos
+	
+	
+	
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}

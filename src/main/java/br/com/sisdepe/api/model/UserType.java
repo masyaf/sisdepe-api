@@ -1,21 +1,21 @@
 package br.com.sisdepe.api.model;
 
-public enum UserType {
+public enum UserType {//enum de tipos de usuário
 
-	TEACHER{ 
+	TEACHER{ //professor
 		@Override
 		public String toString() {
 			
 			return "Teacher";
 		}
 	}, 
-	COORDINATOR{
+	COORDINATOR{//coordenador
 		@Override
 		public String toString() {
 			return "Coordinator";
 		}
 	},
-	ADMINISTRATOR{
+	ADMINISTRATOR{//administrador
 		@Override
 		public String toString() {
 			return "Administrator";

@@ -12,24 +12,26 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "ocurrence")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "ocurrence")//anotação que nomeia a tabela no banco de dados como 'ocurrence'
 public class Ocurrence {
 
-	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "ocurrence_seq", sequenceName = "ocurrence_seq")
-	@GeneratedValue(generator = "ocurrence_seq", strategy = GenerationType.SEQUENCE)
-	@Column(nullable = false)
+	@Id//define o atributo como chave primária
+	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "ocurrence_seq", sequenceName = "ocurrence_seq")//gerador de sequencia para a tabela
+	@GeneratedValue(generator = "ocurrence_seq", strategy = GenerationType.SEQUENCE)// gera automaticamente os id's incrementais da tabela 
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
 	private Long code;
 	private String description;
-	@NotNull
+	@NotNull//anotação que garante que que não seja persistido um dado nulo neste campo
 	@Column(name = "created_at")
 	private LocalDate createdAt;
-	@OneToOne
+	@OneToOne// define uma relação de um para um com 'usuario'
 	private User user;
-	@OneToOne
+	@OneToOne// define uma relação de um para um com 'tipo de ocorrencia'
 	private OcurrenceType type;
-
+	
+	
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}

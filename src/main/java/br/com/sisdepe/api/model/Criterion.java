@@ -10,19 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "criterion")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "criterion")//anotação que nomeia a tabela no banco de dados como 'criterion'
 public class Criterion {
 
-	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "criterion_seq", sequenceName = "criterion_seq")
-	@GeneratedValue(generator = "criterion_seq", strategy = GenerationType.SEQUENCE)
-	@Column(nullable = false)
-	private Long code;
+	@Id//define o atributo como chave primária
+	@SequenceGenerator(allocationSize = 1, initialValue = 1, name = "criterion_seq", sequenceName = "criterion_seq")//gerador de sequencia
+	@GeneratedValue(generator = "criterion_seq", strategy = GenerationType.SEQUENCE)// gera automaticamente os id's ta tabela 
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
+	private Long code;//chave primária
 	private String name;
 	private BigDecimal point = BigDecimal.ZERO;
 	
 	
+	
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}

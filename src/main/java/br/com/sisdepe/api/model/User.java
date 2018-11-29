@@ -13,21 +13,21 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-@Entity
-@Table(name = "users")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "users")// //anotação que nomeia a tabela no banco de dados como 'users'
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Id//define o atributo como chave primária
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//gerador de sequencia para a tabela, com ids auto-incrementais
+	@Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
 	private Long code;
-	@NotBlank
+	@NotBlank// define que não pode estar em branco o valor passado no bind do objeto para salvar.
 	private String name;
 	@NotBlank
 	private String login;
 	@NotBlank
 	private String password;
-	@Email
+	@Email//anotaçao que valida se o valor passado no bind é realmente um email
 	private String email;
 	@NotNull
 	private Boolean active;
@@ -36,7 +36,9 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	private UserType type;
-
+	
+	
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}

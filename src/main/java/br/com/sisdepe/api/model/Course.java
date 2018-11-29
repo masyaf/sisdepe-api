@@ -21,28 +21,30 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@Table(name = "course")
+@Entity//entidade a ser gerenciada pelo JPA
+@Table(name = "course")//anotação que nomeia a tabela no banco de dados como 'course'
 public class Course {
-	@Id
-	@SequenceGenerator(name = "course_seq", sequenceName = "course_seq", schema = "public", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "course_seq")
-    @Column(nullable = false)
-	private Long code;
+	@Id//define o atributo como chave primária
+	@SequenceGenerator(name = "course_seq", sequenceName = "course_seq", schema = "public", allocationSize = 1)//gerador de sequencia
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "course_seq")// gera automaticamente os id's ta tabela 
+    @Column(nullable = false)//anotação que determina como coluna e não permite que seja nulo o valor atribuído
+	private Long code;//chave primária
 
-	@NotEmpty
+	@NotEmpty//anotação que determina que não pode ser vazio
 	private String name;
 
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Grade> grades;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)//OneToMany - determina uma relação de um para muitos de grades e course 
+	private List<Grade> grades;//variável de lista de turmas dentro do curso
 
 	@ManyToMany
 	@JoinTable(name = "course_user", joinColumns = @JoinColumn(name = "code_course")
-				, inverseJoinColumns = @JoinColumn(name = "code_user"))
-	private Set<User> users;
-
+				, inverseJoinColumns = @JoinColumn(name = "code_user"))//existe uma relação de muitos para muitos de course para user
+	private Set<User> users;//variável de lista de usuarios dentro do curso
+	
+	
+	//getters e setters
 	public Long getCode() {
 		return code;
 	}
@@ -74,7 +76,7 @@ public class Course {
 	public void setGrades(List<Grade> grades) {
 		this.grades = grades;
 	}
-
+	//equals e hashcode
 	@Override
 	public int hashCode() {
 		final int prime = 31;

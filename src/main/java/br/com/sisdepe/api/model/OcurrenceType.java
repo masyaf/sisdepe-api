@@ -20,7 +20,7 @@ public class OcurrenceType {
 	@NotNull //anotação que garante que que não seja persistido um dado nulo neste campo
 	@Column(nullable = false)//também garante que é uma coluna no banco e que não pode ser nula.
 	private String name;
-	
+	//d
 	
 	//getters e setters
 	public OcurrenceType() {

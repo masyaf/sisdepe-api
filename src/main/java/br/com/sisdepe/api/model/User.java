@@ -28,6 +28,7 @@ public class User {
 	@NotBlank
 	private String password;
 	@Email//anotaçao que valida se o valor passado no bind é realmente um email
+	@Column(unique = true)
 	private String email;
 	@NotNull
 	private Boolean active;

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import br.com.sisdepe.api.model.Course;
 import br.com.sisdepe.api.model.Grade;
 import br.com.sisdepe.api.repository.CourseRepository;
 import br.com.sisdepe.api.service.CourseService;
+import br.com.sisdepe.api.service.GradeService;
 
 @RestController//define como um controller de padrão rest
 @RequestMapping("/courses")// mapeia a partir da rota /courses/...
@@ -28,6 +30,9 @@ public class CourseResource {
 
 	@Autowired//injeção de dependencia do serviço de cursos
 	private CourseService courseService;
+	
+	@Autowired
+	private GradeService gradeService;
 
 	@Autowired//injeção de dependencia do repositório de cursos
 	private CourseRepository courseRepository;
@@ -62,12 +67,22 @@ public class CourseResource {
 	}
 
 	@PostMapping("/{code}/grades")//  courses/id/grades  via post
+	@PutMapping("/{code}/grades")
 	public ResponseEntity<Course> addGrades(@PathVariable Long code, @Valid @RequestBody List<Grade> grades,
 			HttpServletResponse response) {
 		Course courseSaved = courseService.findByCode(code);// retorna todas as turmas de um curso
 		courseService.addGradeToCourse(courseSaved, grades);//adiciona turma a um curso
 		publisher.publishEvent(new ResourceCreatedEvent(this, response, code));
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseSaved);
+	}
+	@PutMapping("/grades/{code}")
+	public ResponseEntity<Grade> updateGrades(@PathVariable Long code , @Valid @RequestBody Grade grade,
+			HttpServletResponse response) {
+		
+		Grade gradeSaved = gradeService.update(code, grade);
+		
+		publisher.publishEvent(new ResourceCreatedEvent(this, response, grade.getCode()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(gradeSaved);
 	}
 
 }
